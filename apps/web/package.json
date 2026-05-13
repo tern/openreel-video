@@ -13,9 +13,62 @@
     "test:run": "vitest run",
     "lint": "eslint src",
     "typecheck": "tsc --noEmit",
+    "electron:dev": "electron-vite dev",
+    "electron:build": "electron-vite build",
+    "electron:preview": "electron-vite preview",
+    "build:win": "pnpm electron:build && electron-builder --win",
+    "build:mac": "pnpm electron:build && electron-builder --mac",
+    "build:linux": "pnpm electron:build && electron-builder --linux",
     "clean": "rm -rf dist node_modules/.vite && find src -name '*.js' -o -name '*.js.map' -o -name '*.d.ts' -o -name '*.d.ts.map' | xargs rm -f 2>/dev/null || true"
   },
+  "build": {
+    "appId": "com.openreel.app",
+    "productName": "OpenReel Video",
+    "directories": {
+      "output": "dist/electron"
+    },
+    "files": [
+      "out/**/*"
+    ],
+    "win": {
+      "target": [
+        "nsis"
+      ],
+      "icon": "public/icon.ico"
+    },
+    "mac": {
+      "target": [
+        "dmg"
+      ],
+      "icon": "public/icon.icns",
+      "extendInfo": {
+        "NSCameraUsageDescription": "Application requires camera access for recording.",
+        "NSMicrophoneUsageDescription": "Application requires microphone access for recording."
+      }
+    },
+    "linux": {
+      "target": [
+        "AppImage",
+        "deb"
+      ],
+      "icon": "public/icon.png",
+      "category": "Video",
+      "maintainer": "Augustus Otu"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true
+    },
+    "publish": [
+      {
+        "provider": "github",
+        "owner": "Augani",
+        "repo": "openreel-video"
+      }
+    ]
+  },
   "dependencies": {
+    "@electron-toolkit/utils": "^4.0.0",
     "@gsap/react": "^2.1.2",
     "@openreel/core": "workspace:*",
     "@openreel/ui": "workspace:*",
@@ -54,6 +107,10 @@
     "@typescript-eslint/parser": "^8.53.0",
     "@vitejs/plugin-react": "^4.3.1",
     "autoprefixer": "^10.4.19",
+    "electron": "^42.0.1",
+    "electron-builder": "^26.8.1",
+    "electron-updater": "^6.8.3",
+    "electron-vite": "^5.0.0",
     "eslint": "^9.39.2",
     "eslint-plugin-react-hooks": "^7.0.1",
     "fast-check": "^3.19.0",

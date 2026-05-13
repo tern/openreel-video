@@ -10,57 +10,45 @@ OpenReel Video is an open-source, browser-based professional video editor design
     - **Media Engine**: [MediaBunny](https://mediabunny.dev), WebCodecs (Hardware acceleration), WebGPU (GPU-accelerated rendering).
     - **Audio**: Web Audio API.
     - **3D/Graphics**: THREE.js, Canvas2D.
-    - **Storage**: IndexedDB (Local project persistence).
+    - **Storage**: IndexedDB (Web) / Local File System (Desktop).
+    - **Desktop**: Electron, electron-vite, electron-builder.
 
 ## Architecture
 The project is structured as a **pnpm monorepo**:
 
-- `apps/web`: The React-based frontend application.
+- `apps/web`: The React-based frontend application and Electron host.
     - `src/components`: UI components (Timeline, Preview, Inspector).
     - `src/bridges`: Coordination layer between the UI and the core engines.
     - `src/stores`: Zustand stores for application state.
     - `src/services`: Background services like auto-save and screen recording.
-- `packages/core`: The core editing engines.
-    - `src/video`: Video processing and rendering logic.
-    - `src/audio`: Audio processing, effects, and beat detection.
-    - `src/graphics`: SVG and shape handling.
-    - `src/export`: Video/Audio encoding and export management.
-    - `src/actions`: The undoable action system.
+    - `electron/`: Electron main process and preload scripts.
+    - `electron-vite.config.ts`: Configuration for Electron build.
+- `packages/core`: The core editing engines (Video, Audio, Graphics, Export).
 
 ## Building and Running
-The project uses `pnpm` for package management.
+- **Web Development**: `pnpm dev`
+- **Desktop Development**: `pnpm --filter @openreel/web electron:dev`
+- **Desktop Build (Win)**: `pnpm --filter @openreel/web build:win`
+- **Desktop Build (Mac)**: `pnpm --filter @openreel/web build:mac`
+- **Desktop Build (Linux)**: `pnpm --filter @openreel/web build:linux`
+- **WASM Build**: `pnpm build:wasm` (Required before first run/build)
 
-- **Installation**:
-  ```bash
-  pnpm install
-  ```
-- **Development**:
-  ```bash
-  pnpm dev
-  ```
-- **Building**:
-  ```bash
-  pnpm build
-  # This builds both the WASM core and the web application.
-  ```
-- **Testing**:
-  ```bash
-  pnpm test      # Watch mode
-  pnpm test:run  # CI mode
-  ```
-- **Quality Tools**:
-  ```bash
-  pnpm lint
-  pnpm typecheck
-  ```
+## Desktop Features & Workflows
+- **Native APIs**: Accessible via `window.api` (see `use-electron.ts` hook). Supports native file dialogs and direct file system access.
+- **Auto-Updates**: Managed by `electron-updater` via GitHub Releases.
+- **CI/CD**: `.github/workflows/release.yml` handles automated cross-platform builds on tag push (`v*`).
+
+## Upstream Synchronization
+This project is a fork. To stay updated with the original repository:
+1. Add upstream: `git remote add upstream https://github.com/Augani/openreel-video.git`
+2. Sync script: Run `./scripts/sync-upstream.sh` to fetch and prepare merge from `upstream/main`.
+3. Branching: Use `desktop-main` for the primary desktop codebase and `main` to track upstream.
 
 ## Development Conventions
-- **Action-Based State**: All edits should be implemented as undoable actions within the core system.
-- **Immutable Updates**: Use Zustand for state management, ensuring state updates are immutable.
-- **Engine Separation**: Keep engine logic (in `packages/core`) independent of UI logic (in `apps/web`). Use bridges for coordination.
-- **Strict TypeScript**: Avoid `any`. Prefer interfaces for object shapes and follow strict type checking.
-- **Conventional Commits**: Use conventional commit messages (e.g., `feat:`, `fix:`, `refactor:`, `perf:`).
-- **AI-Ready**: The project is designed for AI-assisted development. Refer to `llm.txt` (shadcn/ui context) and existing bridges for pattern consistency.
+- **Action-Based State**: All edits should be implemented as undoable actions.
+- **Desktop Compatibility**: Always check `isDesktop` via `useElectron()` before calling Electron-specific APIs to maintain web/desktop parity.
+- **Strict TypeScript**: No `any`. Update `electron-env.d.ts` when adding IPC channels.
+- **AI-Ready**: Refer to `llm.txt` for shadcn/ui. Use `scripts/claude-review.md` for AI code reviews.
 
 ## Key Files
 - `package.json`: Root configuration and workspace scripts.
