@@ -1,8 +1,12 @@
 {
-  "name": "@openreel/web",
+  "name": "openreel-video",
   "version": "0.1.0",
   "private": true,
+  "description": "Professional video editing in your browser and on your desktop",
+  "author": "Augustus Otu",
+  "homepage": "https://openreel.video",
   "type": "module",
+  "main": "./out/main/main.js",
   "scripts": {
     "dev": "vite",
     "build": "tsc --noEmit && vite build",

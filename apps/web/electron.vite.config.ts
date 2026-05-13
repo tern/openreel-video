@@ -6,26 +6,23 @@ export default defineConfig({
   main: {
     plugins: [externalizeDepsPlugin()],
     build: {
-      rollupOptions: {
-        input: {
-          index: resolve(__dirname, 'electron/main.ts')
-        }
+      lib: {
+        entry: resolve(__dirname, 'electron/main.ts')
       }
     }
   },
   preload: {
     plugins: [externalizeDepsPlugin()],
     build: {
-      rollupOptions: {
-        input: {
-          index: resolve(__dirname, 'electron/preload.ts')
-        }
+      lib: {
+        entry: resolve(__dirname, 'electron/preload.ts')
       }
     }
   },
   renderer: {
     root: '.',
     build: {
+      target: "esnext",
       rollupOptions: {
         input: {
           index: resolve(__dirname, 'index.html')
@@ -33,10 +30,15 @@ export default defineConfig({
       }
     },
     plugins: [react()],
+    assetsInclude: ["**/*.wasm"],
     resolve: {
       alias: {
-        '@': resolve(__dirname, 'src')
+        '@': resolve(__dirname, 'src'),
+        "@openreel/core": resolve(__dirname, "../../packages/core/src")
       }
+    },
+    worker: {
+      format: "es"
     }
   }
 })
