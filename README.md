@@ -1,10 +1,20 @@
 # OpenReel Video
 
-> **The open source CapCut alternative. Professional video editing in your browser. No uploads. No installs. 100% open source.**
+> **The open source CapCut alternative. Professional video editing in your browser and on your Desktop (Windows, macOS, Linux). No uploads. No installs. 100% open source.**
 
-OpenReel Video is a fully-featured browser-based video editor that runs entirely client-side. Built with React, TypeScript, WebCodecs, and WebGPU for professional-grade video editing without the need for expensive software or cloud processing.
+OpenReel Video is a fully-featured video editor that runs entirely client-side. Now available as a **standalone Desktop Application** built with Electron, React, TypeScript, WebCodecs, and WebGPU.
 
-**[Try it Live](https://openreel.video)** | **[Documentation](CONTRIBUTING.md)** | **[Discussions](https://github.com/Augani/openreel-video/discussions)** | **[Twitter](https://x.com/python_xi)**
+**[Desktop Version Docs](README-desktop.md)** | **[Try it Live](https://openreel.video)** | **[Documentation](CONTRIBUTING.md)**
+
+---
+
+## 🚀 Desktop Version Features
+- **Native File System**: Direct access to local drives.
+- **Enhanced Performance**: Optimized GPU settings for 4K editing.
+- **Offline Editing**: No internet required.
+- **Cross-Platform**: Windows (.exe), macOS (.dmg/.app), Linux (.AppImage/.deb).
+
+---
 
 ![OpenReel Editor](https://img.shields.io/badge/Lines%20of%20Code-130k+-blue) ![License](https://img.shields.io/badge/License-MIT-green) ![Status](https://img.shields.io/badge/Status-Beta-orange) ![Open Source](https://img.shields.io/badge/Open%20Source-100%25-brightgreen)
 
